@@ -6,3 +6,24 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+img {
+  width: 80%;
+}
+
+.msg {
+  color: red;
+}
+
+label {
+  display: block;
+}
+
+button {
+  margin-top: 20px;
+}
+
+div {
+  margin-top: 20px;
+}

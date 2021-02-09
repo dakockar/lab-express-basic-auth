@@ -24,9 +24,32 @@ const capitalized = (string) => string[0].toUpperCase() + string.slice(1).toLowe
 
 app.locals.title = `${capitalized(projectName)}- Generated with IronGenerator`;
 
+const mongoose = require("mongoose");
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+app.use(session({
+    secret: 'somethingWeirder',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000 // expires in 1 hour
+    },
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection,
+        ttl: 60 * 60 // expires in 1 hour
+    })
+}));
+
+
 // 👇 Start handling routes here
 const index = require('./routes/index');
 app.use('/', index);
+
+
+const authRoutes = require("./routes/auth.routes.js");
+app.use("/", authRoutes);
+
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
